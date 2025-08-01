@@ -81,7 +81,7 @@ class MyBatisGeneratorPlugin implements Plugin<Project> {
           println "自動檢測到 JDBC 驅動類別: ${driverClass}"
         }
         if (driverClass) {
-          fileContent = fileContent.replaceAll('\\$\\{mybatis\\.generator\\.db\\.driverClass\\}', driverClass)
+          fileContent = fileContent.replaceAll('\\$\\{mybatis\\.generator\\.db\\.driverClass\\}', driverClass as String)
         } else {
           println "未檢測到 JDBC 驅動類別 請確保已添加相關依賴。"
         }
@@ -90,7 +90,7 @@ class MyBatisGeneratorPlugin implements Plugin<Project> {
         // 替代變數 mybatis.generator.db.connectionURL
         if( project.hasProperty('mybatis.generator.db.connectionURL')) {
           connectionURL = project.property('mybatis.generator.db.connectionURL')
-          fileContent = fileContent.replaceAll('\\$\\{mybatis\\.generator\\.db\\.connectionURL\\}', connectionURL)
+          fileContent = fileContent.replaceAll('\\$\\{mybatis\\.generator\\.db\\.connectionURL\\}', connectionURL as String)
         } else {
           println "未提供 mybatis.generator.db.connectionURL，請在專案屬性中設定。"
         }
@@ -103,7 +103,7 @@ class MyBatisGeneratorPlugin implements Plugin<Project> {
         if(project.hasProperty("mybatis.generator.target.package")) {
           targetPackage = project.property("mybatis.generator.target.package")
         }
-        fileContent = fileContent.replaceAll('\\$\\{mybatis\\.generator\\.target\\.package\\}', targetPackage)
+        fileContent = fileContent.replaceAll('\\$\\{mybatis\\.generator\\.target\\.package\\}', targetPackage as String)
 
 
         def targetFile = new File(project.rootDir, "build-tools/mybatis/mybatis-generator-config.xml")
