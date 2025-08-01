@@ -1,11 +1,12 @@
 plugins {
   id 'groovy'
   id 'java-gradle-plugin'
+  id 'maven-publish'
   id 'com.diffplug.spotless' version '6.25.0'
 }
 
 group = 'com.riease'
-version = '1.0-SNAPSHOT'
+version = '1.15-SNAPSHOT'
 
 repositories {
   mavenCentral()
@@ -13,17 +14,49 @@ repositories {
 
 dependencies {
   implementation 'org.apache.groovy:groovy:4.0.14'
+  implementation 'org.apache.commons:commons-lang3:3.18.0'
 }
 
 test {
   useJUnitPlatform()
 }
 
+/**
+ * 宣告建置成 Gradle Plugin
+ */
 gradlePlugin {
   plugins {
     mybatisGenerator {
       id = 'com.riease.mybatis-generator'
       implementationClass = 'com.riease.MyBatisGeneratorPlugin'
+    }
+  }
+}
+
+/**
+ * 發布到 GitHub Packages
+ */
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+    }
+  }
+  repositories {
+    // GitHub Packages
+    maven {
+      name = "GitHubPackages"
+      url = uri("https://maven.pkg.github.com/riease/mybatis-generator-gradle-plugin")
+      credentials {
+        username = project.findProperty("github.package.user") ?: System.getenv("github.package.user")
+        password = project.findProperty("github.package.write.token") ?: System.getenv("github.package.write.token")
+      }
+    }
+
+    // 本地 Maven 倉庫
+    maven{
+      name = "LocalMaven"
+      url = uri("${project.rootDir}/repo")
     }
   }
 }

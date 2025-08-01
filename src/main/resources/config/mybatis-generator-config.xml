@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+  <!-- 定義生成器配置 -->
+  <context id="mainContext" targetRuntime="MyBatis3DynamicSql" defaultModelType="conditional">
+
+    <!-- 屬性設置 -->
+    <property name="autoDelimitKeywords" value="true"/>
+
+    <!-- 插件配置 -->
+    <!--  為所有生成的模型類自動添加 equals 和 hashCode 方法 -->
+    <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+    <!-- 添加支持 RowBounds 的方法到生成的 Mapper 接口 -->
+    <!--        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>-->
+    <!--  為所有生成的模型類自動添加 toString 方法 -->
+    <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+    <!-- 實現 Serializable 介面的插件 -->
+    <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+    <!-- 虛擬主鍵插件，可以用來設置自定義的主鍵生成方式 -->
+    <plugin type="org.mybatis.generator.plugins.VirtualPrimaryKeyPlugin"/>
+    <!-- 添加流式建造器方法到生成的模型類 -->
+    <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin"/>
+
+    <!-- 註釋生成器 -->
+    <commentGenerator>
+      <!-- 添加註釋到生成的代碼中 -->
+      <property name="addRemarkComments" value="true"/>
+      <!-- 抑制日期的生成 -->
+      <property name="suppressDate" value="true"/>
+    </commentGenerator>
+
+    <!-- 數據庫連接配置 -->
+    <jdbcConnection driverClass="${mybatis.generator.db.driverClass}"
+                    connectionURL="${mybatis.generator.db.connectionURL}"
+                    userId="${mybatis.generator.db.username}"
+                    password="${mybatis.generator.db.password}">
+      <!--設置可以獲取表的 remarks 信息-->
+      <property name="useInformationSchema" value="true"/>
+      <!--設置可以獲取 remarks 信息-->
+      <property name="remarks" value="true"/>
+    </jdbcConnection>
+
+    <!-- Java 類型解析器配置 -->
+    <javaTypeResolver>
+      <!-- 強制使用 BigDecimal 作為 Java 類型 -->
+      <property name="forceBigDecimals" value="true"/>
+      <!-- 使用 JSR-310 (Java 8) 日期類型 -->
+      <property name="useJSR310Types" value="true"/>
+    </javaTypeResolver>
+
+    <!-- Java 實體類生成配置 -->
+    <javaModelGenerator targetPackage="${mybatis.generator.target.package}.dao.entity"
+                        targetProject="src/main/java">
+      <!-- 啟用子包 -->
+      <property name="enableSubPackages" value="true"/>
+      <!-- 自動修剪字符串 -->
+      <property name="trimStrings" value="true"/>
+    </javaModelGenerator>
+
+    <!-- Java Mapper 生成配置 -->
+    <javaClientGenerator targetPackage="${mybatis.generator.target.package}.dao.mapper"
+                         targetProject="src/main/java"
+                         type="ANNOTATEDMAPPER">
+      <property name="enableSubPackages" value="true"/>
+    </javaClientGenerator>
+
+    <!-- 數據庫表配置 -->
+    <!-- ${mybatis.generator.db.tables} -->
+
+  </context>
+</generatorConfiguration>
