@@ -105,13 +105,31 @@ class MyBatisGeneratorPlugin implements Plugin<Project> {
         }
         fileContent = fileContent.replaceAll('\\$\\{mybatis\\.generator\\.target\\.package\\}', targetPackage as String)
 
-
         def targetFile = new File(project.rootDir, "build-tools/mybatis/mybatis-generator-config.xml")
         if (!targetFile.parentFile.exists()) {
           targetFile.parentFile.mkdirs()
         }
-        targetFile.text = fileContent
-        println "已複製 mybatis-generator-config.xml 到: ${targetFile.absolutePath}"
+
+        // 根據參數 mybatis.generator.copy.overwrite 決定是否覆蓋檔案
+        def needToOverwrite = project.hasProperty('mybatis.generator.copy.overwrite') && project.property('mybatis.generator.copy.overwrite') == 'true'
+        // 如果需要覆蓋，則直接寫入檔案
+        if(needToOverwrite) {
+          targetFile.text = fileContent
+          println "已複製 mybatis-generator-config.xml 到: ${targetFile.absolutePath}"
+          return
+        }
+
+        // 如果檔案不存在，則寫入內容
+        if(!targetFile.exists()) {
+          targetFile.text = fileContent
+          println "已複製 mybatis-generator-config.xml 到: ${targetFile.absolutePath}"
+          return
+        }
+
+        // 如果檔案已存在，則提示使用者
+        if (targetFile.exists()) {
+          println "mybatis-generator-config.xml 已存在於 ${targetFile.absolutePath}，若要覆蓋請設定 mybatis.generator.copy.overwrite=true"
+        }
       }
     }
 
@@ -225,7 +243,6 @@ class MyBatisGeneratorPlugin implements Plugin<Project> {
     def files = project.configurations.runtimeClasspath.files.findAll { it.name.contains(artifactName) }
     files.each { file ->
       def url = file.toURI().toURL()
-      println "Adding URL to classpath: ${url}"
       if (cLoader instanceof URLClassLoader) {
         def method = URLClassLoader.class.getDeclaredMethod("addURL", URL)
         method.setAccessible(true)
@@ -264,7 +281,7 @@ class MyBatisGeneratorPlugin implements Plugin<Project> {
 //      if (col.isForeignKey) sb.append(" isForeignKey=\"true\"")
 //      if (col.comment) sb.append(" comment=\"${col.comment}\"")
 //      sb.append("/>\n")
-      println("check column: ${col.name}, type: ${col.type}, lenght: ${col.length} nullable: ${col.nullable} isPrimaryKey: ${col.isPrimaryKey}, isForeignKey: ${col.isForeignKey}, comment: ${col.comment}")
+//      println("check column: ${col.name}, type: ${col.type}, lenght: ${col.length} nullable: ${col.nullable} isPrimaryKey: ${col.isPrimaryKey}, isForeignKey: ${col.isForeignKey}, comment: ${col.comment}")
     }
 //    tableMeta.primaryKeys.each { pk ->
 //      sb.append("  <primaryKey columnName=\"${pk}\"/>\n")

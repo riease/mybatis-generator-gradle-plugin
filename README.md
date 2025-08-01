@@ -55,6 +55,8 @@ dependencies {
 ## 進階設定
 - 可自訂目標 package：`mybatis.generator.target.package`
 - 支援多種資料庫（MySQL、MariaDB、PostgreSQL、Oracle、SQLServer、SQLite）
+- 可設定 `mybatis.generator.copy.overwrite` 參數：
+  - 預設為 false，若設為 true，則複製 mybatis-generator-config.xml 時會覆蓋已存在的檔案。
 
 ## 範例
 ```shell
@@ -68,7 +70,39 @@ gradle myBatisGenerateAndFormat
 # 產生並格式化
 ```
 
+## MyBatis Generator 範本說明
+
+控制資料庫欄位對應到 Java 型別的規則
+* forceBigDecimals：true 時，所有 DECIMAL/NUMERIC 欄位都用 BigDecimal，否則可能用 Long、Integer 等。
+* useJSR310Types：true 時，日期型別用 Java 8 的 LocalDate、LocalDateTime 等（JSR-310），否則用 java.util.Date
+
+```xml
+<javaTypeResolver>
+  <!-- 強制使用 BigDecimal 作為 Java 類型 -->
+  <property name="forceBigDecimals" value="true"/>
+  <!-- 使用 JSR-310 (Java 8) 日期類型 -->
+  <property name="useJSR310Types" value="true"/>
+</javaTypeResolver>
+```
+
+用來控制生成程式碼時的註釋行為
+主要用途：  
+決定是否在生成的 Java 類、Mapper、XML 等檔案中加入註釋。
+可自訂註釋內容，例如是否包含欄位備註、是否顯示日期等。
+常用屬性（以 property 方式設定）：
+* addRemarkComments：true 時，會將資料庫欄位的備註（remarks）加入到 Java 屬性註釋。
+* suppressDate：true 時，生成的註釋不包含日期。
+* suppressAllComments：true 時，完全不生成註釋  
+
+```xml
+<commentGenerator>
+  <!-- 添加註釋到生成的代碼中 -->
+  <property name="addRemarkComments" value="true"/>
+  <!-- 抑制日期的生成 -->
+  <property name="suppressDate" value="true"/>
+</commentGenerator>
+```
+
 
 ## 授權
 MIT License
-
