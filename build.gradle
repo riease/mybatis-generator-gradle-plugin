@@ -6,15 +6,17 @@ plugins {
 }
 
 group = 'com.riease'
-version = '1.15-SNAPSHOT'
+version = '1.17-SNAPSHOT'
 
 repositories {
   mavenCentral()
 }
 
 dependencies {
-  implementation 'org.apache.groovy:groovy:4.0.14'
+  api 'org.mybatis.generator:mybatis-generator-core:1.4.2'
   implementation 'org.apache.commons:commons-lang3:3.18.0'
+  implementation 'org.apache.groovy:groovy:4.0.14'
+  implementation 'org.jsoup:jsoup:1.21.1'
 }
 
 test {

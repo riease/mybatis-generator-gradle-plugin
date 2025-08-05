@@ -57,6 +57,8 @@ dependencies {
 - 支援多種資料庫（MySQL、MariaDB、PostgreSQL、Oracle、SQLServer、SQLite）
 - 可設定 `mybatis.generator.copy.overwrite` 參數：
   - 預設為 false，若設為 true，則複製 mybatis-generator-config.xml 時會覆蓋已存在的檔案。
+- 可設定 `mybatis.generator.append.tables` 參數：
+  - 預設為 true，產生 table 定義時會以 append 方式加入，不會覆蓋原有內容，若設定為 false 則不處理。
 
 ## 範例
 ```shell

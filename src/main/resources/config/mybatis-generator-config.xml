@@ -66,7 +66,6 @@
     </javaClientGenerator>
 
     <!-- 數據庫表配置 -->
-    <!-- ${mybatis.generator.db.tables} -->
 
   </context>
 </generatorConfiguration>
