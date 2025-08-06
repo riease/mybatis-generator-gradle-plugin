@@ -14,7 +14,10 @@
 
 ## 安裝
 
-若要在其他專案中引用本 plugin，請務必在 `settings.gradle` 檔案中加入下列 repository 設定，確保 Gradle 能正確下載相依套件：
+若要在其他專案中引用本 plugin，請務必在 `settings.gradle` 檔案中加入下列 repository 設定，確保 Gradle 能正確下載相依套件：  
+檔案使用的參數可以在 ~/.gradle/gradle.properties 中設定，或是透過環境變數設定。
+* `github.package.user`：GitHub Packages 使用者名稱。
+* `github.package.token`：GitHub Packages 存取令牌，務必確認該 token 有 packages 讀取權限。
 
 ```groovy
 pluginManagement {
@@ -27,8 +30,9 @@ pluginManagement {
     maven {
       url = uri("https://maven.pkg.github.com/riease/mybatis-generator-gradle-plugin")
       credentials {
-        username = System.getenv("github.package.user")
-        password = System.getenv("github.package.token")
+        // Use Gradle properties or environment variables for credentials
+        username = providers.gradleProperty("github.package.user").orNull
+        password = providers.gradleProperty("github.package.token").orNull
       }
     }
   }
