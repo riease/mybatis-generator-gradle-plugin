@@ -172,7 +172,6 @@
   escapeWildcards CDATA #IMPLIED
   delimitIdentifiers CDATA #IMPLIED
   delimitAllColumns CDATA #IMPLIED
-  customFlag CDATA #IMPLIED
   >
 
 <!--
