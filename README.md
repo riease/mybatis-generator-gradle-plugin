@@ -55,9 +55,29 @@ repositories {
   maven {
     url = uri("https://maven.pkg.github.com/riease/mybatis-generator-gradle-plugin")
     credentials {
-      username = project.findProperty("github.package.user") ?: System.getenv("github.package.user")
-      password = project.findProperty("github.package.token") ?: System.getenv("github.package.token")
+      // 使用 Gradle properties 或環境變數來設定認證資訊
+      //username = project.findProperty("github.package.user") ?: System.getenv("github.package.user")
+      //password = project.findProperty("github.package.token") ?: System.getenv("github.package.token")
+      // providers.gradleProperty() 會自動處理環境變數與 gradle.properties
+      username = providers.gradleProperty("github.package.user").orNull
+      password = providers.gradleProperty("github.package.token").orNull
     }
+  }
+}
+```
+
+其中，上述的 repositories 可以拉到 ~/.gradle/init.gradle 檔案中，這樣所有專案都可以共用。
+```groovy
+allprojects {
+  repositories {
+    maven {
+      url = uri("https://maven.pkg.github.com/riease/mybatis-generator-gradle-plugin")
+      credentials {
+        username = providers.gradleProperty("github.package.user").orNull
+        password = providers.gradleProperty("github.package.token").orNull
+      }
+    }
+    mavenCentral()
   }
 }
 ```
